@@ -22,6 +22,17 @@ The Bridge Pattern solves this problem by creating a bridge between the two clas
 - 3 Payment methods (Stripe, Paypal, CreditCard)
 - Total: 5 classes instead of 6+
 
+
+# Purchase & Payment Hierarchy
+
+This diagram illustrates the **Abstraction Hierarchy** (types of purchases) and the **Implementation Hierarchy** (payment methods) using the Bridge Design Pattern.
+
+## Diagram
+
+**Key**: The ◇ ──── ▷ represents the "bridge" - composition relationship
+
+
+```text
 Abstraction Hierarchy          Implementation Hierarchy
 ┌─────────────┐                ┌─────────────┐
 │   Purchase  │◇──────────────▷│   Payment   │
@@ -38,7 +49,7 @@ Abstraction Hierarchy          Implementation Hierarchy
 └─────────────┘                │ CreditCard  │
                                └─────────────┘
 
-
+```
 
 ## When to Use Bridge Pattern
 ### ✅ Use Bridge When:
