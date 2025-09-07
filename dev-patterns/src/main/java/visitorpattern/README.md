@@ -32,3 +32,23 @@ In `visitorpattern/`:
 - You prefer to keep operation-specific logic outside element classes
 
 Tip: If you expect to frequently add new element types (not just new operations), the Visitor pattern may require more updates, since each visitor needs a method for the new type.
+
+### Double Dispatch
+
+Double dispatch = Choosing the right method based on TWO object types instead of one
+
+```aiignore
+// We have:
+Document doc = new ImageDocument();
+Visitor visitor = new CompressionVisitor();
+
+// Double dispatch:
+doc.accept(visitor);
+
+```
+
+**What happens:**
+1. **First dispatch:** Java sees `doc` is → calls `ImageDocument.accept()` `ImageDocument`
+2. **Second dispatch:** Java sees is → calls `CompressionVisitor.visit(ImageDocument)` `visitor``CompressionVisitor`
+
+**Double dispatch automatically picks the right method based on the runtime types of TWO objects, eliminating the need for ugly `instanceof` checks!**
