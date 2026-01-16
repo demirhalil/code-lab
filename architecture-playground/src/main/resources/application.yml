@@ -1,2 +1,90 @@
 server:
   port: 8080
+
+spring:
+  application:
+    name: architecture-playground
+  # Redis configuration for rate limiting (optional - uses in-memory if not configured)
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      timeout: 2000ms
+  cache:
+    type: redis
+    redis:
+      time-to-live: 600000 # 10 minutes
+
+# JWT Configuration
+jwt:
+  secret: your-256-bit-secret-key-for-production-use-a-strong-random-key-at-least-32-characters-long
+  expiration: 3600000 # 1 hour in milliseconds
+
+# API Gateway Configuration
+gateway:
+  security:
+    enabled: true
+    # Public endpoints that don't require JWT authentication (comma-separated, supports ** wildcard)
+    public-endpoints: /api/auth/**,/actuator/**,/health,/gateway/health/**
+  
+  rate-limit:
+    enabled: true
+    requests-per-minute: 60 # Number of requests allowed per minute per client
+    timeout-duration: 0 # Timeout in milliseconds (0 = no timeout)
+  
+  circuit-breaker:
+    enabled: true
+    failure-rate-threshold: 50 # Percentage of failures before opening circuit
+    wait-duration-in-open-state: 60 # Seconds to wait before trying half-open state
+    sliding-window-size: 10 # Number of calls to track
+    minimum-number-of-calls: 5 # Minimum calls before circuit can open
+    slow-call-rate-threshold: 100 # Percentage of slow calls
+    slow-call-duration-threshold: 60 # Seconds to consider a call slow
+
+# Resilience4j Configuration
+resilience4j:
+  ratelimiter:
+    configs:
+      default:
+        limitForPeriod: 60
+        limitRefreshPeriod: 60s
+        timeoutDuration: 0s
+    instances:
+      apiGatewayRateLimiter:
+        baseConfig: default
+  
+  circuitbreaker:
+    configs:
+      default:
+        registerHealthIndicator: true
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        permittedNumberOfCallsInHalfOpenState: 3
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        waitDurationInOpenState: 60s
+        failureRateThreshold: 50
+        slowCallRateThreshold: 100
+        slowCallDurationThreshold: 60s
+    instances:
+      apiGatewayCircuitBreaker:
+        baseConfig: default
+
+# Actuator Configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus,circuitbreakers,ratelimiters
+  endpoint:
+    health:
+      show-details: when-authorized
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+
+# Logging Configuration
+logging:
+  level:
+    com.architecture.gateway: DEBUG
+    org.springframework.web: INFO
