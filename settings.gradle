@@ -2,3 +2,4 @@ rootProject.name = 'code-lab'
 
 include('architecture-playground')
 include('dev-patterns')
+include('domain-driven-design')
