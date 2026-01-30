@@ -2,3 +2,6 @@ rootProject.name = 'code-lab'
 
 include('java-practices')
 include('spring-practices')
+include('eureka-server')
+include('tollrate-service')
+include('fastpass-service')
