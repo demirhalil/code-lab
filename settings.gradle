@@ -1,5 +1,4 @@
 rootProject.name = 'code-lab'
 
-include('architecture-playground')
-include('dev-patterns')
-include('quick-bytes')
+include('java-practices')
+include('spring-practices')
