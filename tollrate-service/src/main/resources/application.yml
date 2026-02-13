@@ -5,8 +5,13 @@ spring:
   application:
     name: tollrate-service
 
+application:
+  title: tollrate-service
+
 eureka:
   client:
+    healthcheck:
+      enabled: true
     fetch-registry: false
     register-with-eureka: true
   instance:
