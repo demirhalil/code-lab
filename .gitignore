@@ -90,7 +90,8 @@ crash.log
 crash.*.log
 
 ### Local / secrets (uncomment if you use them)
-# .env
-# .env.local
-# *.pem
-# secrets/
+ .env
+ .env.local
+ *.pem
+ secrets/
+ tf-infrastructure/.env
